@@ -54,34 +54,37 @@ class _RefreshLoadmoreState extends State<RefreshLoadmore> {
   void initState() {
     super.initState();
     _scrollController = widget.scrollController ?? ScrollController();
-    _scrollController!.addListener(() async {
-      if (_scrollController!.position.pixels >=
-          _scrollController!.position.maxScrollExtent) {
-        if (_isLoading) {
-          return;
-        }
+    _scrollController!.addListener(_scrollControllerListener);
+  }
 
-        if (mounted) {
-          setState(() {
-            _isLoading = true;
-          });
-        }
-
-        if (!widget.isLastPage && widget.onLoadmore != null) {
-          await widget.onLoadmore!();
-        }
-
-        if (mounted) {
-          setState(() {
-            _isLoading = false;
-          });
-        }
+  _scrollControllerListener() async {
+    if (_scrollController!.position.pixels >=
+        _scrollController!.position.maxScrollExtent) {
+      if (_isLoading) {
+        return;
       }
-    });
+
+      if (mounted) {
+        setState(() {
+          _isLoading = true;
+        });
+      }
+
+      if (!widget.isLastPage && widget.onLoadmore != null) {
+        await widget.onLoadmore!();
+      }
+
+      if (mounted) {
+        setState(() {
+          _isLoading = false;
+        });
+      }
+    }
   }
 
   @override
   void dispose() {
+    _scrollController!.removeListener(_scrollControllerListener);
     if (widget.scrollController == null) _scrollController!.dispose();
     super.dispose();
   }
