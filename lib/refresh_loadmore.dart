@@ -28,6 +28,8 @@ class RefreshLoadmore extends StatefulWidget {
   /// You can use your custom scrollController, or not | 你可以使用自定义的 ScrollController，或者不使用
   final ScrollController? scrollController;
 
+  final ScrollViewKeyboardDismissBehavior? keyboardDismissBehavior;
+
   const RefreshLoadmore({
     Key? key,
     required this.child,
@@ -38,6 +40,7 @@ class RefreshLoadmore extends StatefulWidget {
     this.loadingWidget,
     this.padding,
     this.scrollController,
+    this.keyboardDismissBehavior,
   }) : super(key: key);
   @override
   _RefreshLoadmoreState createState() => _RefreshLoadmoreState();
@@ -96,6 +99,7 @@ class _RefreshLoadmoreState extends State<RefreshLoadmore> {
       physics: AlwaysScrollableScrollPhysics(),
       padding: widget.padding,
       controller: _scrollController,
+      keyboardDismissBehavior: widget.keyboardDismissBehavior,
       children: <Widget>[
         widget.child,
         Row(
@@ -117,7 +121,7 @@ class _RefreshLoadmoreState extends State<RefreshLoadmore> {
                       : Container(),
             ),
           ],
-        )
+        ),
       ],
     );
 
